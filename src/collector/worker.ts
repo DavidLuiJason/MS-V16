@@ -227,6 +227,12 @@ function handleBookTicker(data: any) {
   }
 }
 
+const numOrUndef = (x: any): number | undefined => {
+  if (x === undefined || x === null) return undefined;
+  const v = Number(x);
+  return Number.isFinite(v) ? v : undefined;
+};
+
 // Kline message handler
 function handleKline(data: any) {
   const sym = data.s;
@@ -244,6 +250,9 @@ function handleKline(data: any) {
     c: Number(k.c),
     v: Number(k.v),
     closed: Boolean(k.x),
+    nt: numOrUndef(k.n),
+    tbv: numOrUndef(k.V),
+    tbq: numOrUndef(k.Q),
   };
 
   const candleKey = `${sym}_${candle.tf}_${candle.t}`;

@@ -7,6 +7,9 @@ export interface KlineData {
   volume: number;
   closeTime: number;
   isClosed: boolean;
+  trades?: number;
+  takerBuyBase?: number;
+  takerBuyQuote?: number;
 }
 
 export interface ScannerTicker {
@@ -36,6 +39,8 @@ export interface ExchangeAdapter {
   fetchAllTickers24h(): Promise<ScannerTicker[]>;
   setHost(dataSource: 'global' | 'us'): void;
 }
+
+const numOrUndef = (x: any): number | undefined => { if (x === undefined || x === null) return undefined; const v = Number(x); return Number.isFinite(v) ? v : undefined; };
 
 export class BinanceAdapter implements ExchangeAdapter {
   private dataSource: 'global' | 'us' = 'global';
@@ -207,6 +212,9 @@ export class BinanceAdapter implements ExchangeAdapter {
       volume: Number(item[5]),
       closeTime: Number(item[6]),
       isClosed: true,
+      trades: numOrUndef(item[8]),
+      takerBuyBase: numOrUndef(item[9]),
+      takerBuyQuote: numOrUndef(item[10]),
     }));
   }
 

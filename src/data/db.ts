@@ -39,6 +39,9 @@ export interface CandleRecord {
   c: number;
   v: number;
   closed: boolean;
+  nt?: number;
+  tbv?: number;
+  tbq?: number;
 }
 
 export interface CollectorLogRecord {
